@@ -14,7 +14,7 @@ export const getAllUsers = async (req, res) => {
 
 
 //Register User
-export const RegisterNewUser = async (req, res) => {
+export const RegisterNewUser = async (req, res, next) => {
     try {
         const { name, email, password } = req.body;
         let user = await User.findOne({ email });
@@ -29,13 +29,13 @@ export const RegisterNewUser = async (req, res) => {
         });
         setCookie(user, res, 201, "User Registerd Succussfully") // to set cookie
     } catch (error) {
-       next(error)
+        next(error)
     }
 };
 
 
 //Login User
-export const LoginUser = async (req, res) => {
+export const LoginUser = async (req, res, next) => {
     try {
         const { email, password } = req.body;
         const user = await User.findOne({ email }).select("+password");
@@ -62,7 +62,9 @@ export const LoginUser = async (req, res) => {
 export const Logout = (req, res) => {
     res.status(200)
         .cookie("token", "", {
-            expires: new Date(Date.now())
+            expires: new Date(Date.now()),
+            sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
+            secure: process.env.NODE_ENV === "Development" ? false : true,
         }).json({
             status: "true",
             message: "Logout Succussfully"
