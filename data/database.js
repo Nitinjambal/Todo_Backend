@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 export const connectDB = () => {
     mongoose
         .connect(process.env.MONGO_URL, {
-            dbName: "Reliance_Backend",
+            dbName: "Todo_Backend",
         })
         .then(() => {
             console.log("DataBase Connected");
