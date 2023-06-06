@@ -7,7 +7,7 @@ import ErrorHandler from "../middlewares/error.js";
 export const getAllUsers = async (req, res) => {
     const users = await User.find({});
     res.status(200).json({
-        status: true,
+        success: true,
         users,
     });
 };
@@ -27,7 +27,7 @@ export const RegisterNewUser = async (req, res, next) => {
             email,
             password: hasedPassword,
         });
-        setCookie(user, res, 201, "User Registerd Succussfully") // to set cookie
+        setCookie(user, res, "User Registerd Succussfully", 201) // to set cookie
     } catch (error) {
         next(error)
     }
@@ -46,12 +46,12 @@ export const LoginUser = async (req, res, next) => {
 
         if (!isMatch) {
             return res.status(404).json({
-                status: false,
+                success: false,
                 message: "Invalid User or Password"
             })
         }
 
-        setCookie(user, res, 200, `Welcome back ${user.name}`)
+        setCookie(user, res, `Welcome back ${user.name}`, 200)
     } catch (error) {
         next(error)
     }
@@ -66,7 +66,7 @@ export const Logout = (req, res) => {
             sameSite: process.env.NODE_ENV === "Development" ? "lax" : "none",
             secure: process.env.NODE_ENV === "Development" ? false : true,
         }).json({
-            status: "true",
+            success: true,
             message: "Logout Succussfully"
         });
 }
@@ -74,7 +74,7 @@ export const Logout = (req, res) => {
 //get single user detail
 export const getUserProfile = (req, res) => {
     res.status(200).json({
-        status: "true",
+        success: true,
         user: req.user,
     });
 };

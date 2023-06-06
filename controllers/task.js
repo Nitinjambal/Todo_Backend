@@ -13,7 +13,7 @@ export const AddNewTask = async (req, res, next) => {
         })
 
         res.status(201).json({
-            status: true,
+            success: true,
             message: "Task Added Succussfully",
         })
     } catch (error) {
@@ -28,8 +28,8 @@ export const GetTasks = async (req, res, next) => {
 
         const userTasks = await Task.find({ user: userId })
         res.status(200).json({
-            status: true,
-            userTasks
+            success: true,
+            userTasks,
         })
     } catch (error) {
         next(error)
@@ -47,7 +47,7 @@ export const UpdateTask = async (req, res, next) => {
         await task.save();
 
         res.status(200).json({
-            status: true,
+            success: true,
             message: "Task Got Updated Succussfully"
         })
     } catch (error) {
@@ -66,11 +66,11 @@ export const DeleteTask = async (req, res, next) => {
 
         await task.deleteOne();
         res.status(200).json({
-            succuss: true,
+            success: true,
             message: "Task Got Deleted"
         })
 
     } catch (error) {
-        next(error)
+        next(error);
     }
 }
